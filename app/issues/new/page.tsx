@@ -8,11 +8,14 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/validationSchemas";
 import { z } from "zod";
-import ErrorMessage from "@/app/ErrorMessage";
+import ErrorMessage from "@/app/components/ErrorMessage";
+import Spinner from "@/app/components/Spinner";
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssue = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const router = useRouter();
   const {
     register,
@@ -26,6 +29,7 @@ const NewIssue = () => {
   const [error, setError] = useState<string | null>(null);
 
   const onFormSubmit = async (data: IssueForm) => {
+    setIsSubmitting(true);
     const res = await fetch("/api/issues", {
       method: "POST",
       body: JSON.stringify(data),
@@ -38,6 +42,7 @@ const NewIssue = () => {
     } else {
       router.push("/issues");
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -51,7 +56,7 @@ const NewIssue = () => {
         <TextField.Root>
           <TextField.Input placeholder="Title" {...register("title")} />
         </TextField.Root>
-        <ErrorMessage>{errors.title?.message}</ErrorMessage>
+        <ErrorMessage>{errors.title?.message} </ErrorMessage>
 
         <Controller
           name="description"
@@ -62,7 +67,9 @@ const NewIssue = () => {
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
-        <Button type="submit">add issue</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          add issue {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
