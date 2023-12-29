@@ -5,7 +5,6 @@ import { createIssueSchema } from "../../validationSchemas";
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const validation = createIssueSchema.safeParse(body);
-  console.log(validation.success);
   if (!validation.success) {
     return NextResponse.json(validation.error.format(), { status: 400 });
   }
