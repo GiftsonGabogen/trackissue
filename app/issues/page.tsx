@@ -3,6 +3,7 @@ import { Table } from "@radix-ui/themes";
 import prisma from "@/prisma/client";
 import IssueStatusBadge from "../components/IssueStatusBadge";
 import { CreateNewIssueButton } from "../components/IssueActions";
+import Link from "next/link";
 
 const delay = async () => {
   const newPromise = new Promise((resolve) => {
@@ -36,7 +37,7 @@ const IssuesPage = async () => {
             issues.map((issue) => (
               <Table.Row key={issue.id}>
                 <Table.RowHeaderCell>
-                  {issue.title}
+                  <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
                   <p className="md:hidden">
                     <IssueStatusBadge status={issue.status} />
                   </p>
