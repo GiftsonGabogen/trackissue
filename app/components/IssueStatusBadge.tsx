@@ -1,5 +1,5 @@
 import { Status } from "@prisma/client";
-import { Text } from "@radix-ui/themes";
+import { Badge } from "@radix-ui/themes";
 import React from "react";
 
 enum StatusColors {
@@ -15,7 +15,9 @@ const statusMap: Record<Status, { label: string; color: StatusColors }> = {
 };
 
 const IssueStatusBadge = ({ status }: { status: Status }) => {
-  return <Text color={statusMap[status].color}>{statusMap[status].label}</Text>;
+  return (
+    <Badge color={statusMap[status].color}>{statusMap[status].label}</Badge>
+  );
 };
 
 export default IssueStatusBadge;
