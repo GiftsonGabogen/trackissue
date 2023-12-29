@@ -4,18 +4,11 @@ import prisma from "@/prisma/client";
 import IssueStatusBadge from "../components/IssueStatusBadge";
 import { CreateNewIssueButton } from "../components/IssueActions";
 import Link from "../components/Link";
-
-const delay = async () => {
-  const newPromise = new Promise((resolve) => {
-    setTimeout(resolve, 1000);
-  });
-
-  return newPromise;
-};
+import delay from "delay";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
-  await delay();
+  await delay(2000);
   return (
     <div className="space-y-5">
       <CreateNewIssueButton />
