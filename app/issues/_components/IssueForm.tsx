@@ -53,6 +53,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       setError("unexpected behaviour");
     } else {
       router.push("/issues");
+      router.refresh();
     }
     setIsSubmitting(false);
   };

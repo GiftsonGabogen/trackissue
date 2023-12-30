@@ -24,8 +24,31 @@ export async function PATCH(
     return NextResponse.json(validation.error.format(), { status: 400 });
   }
   try {
-    const newIssue = await prisma.issue.update({ where: { id }, data });
-    return NextResponse.json(newIssue, { status: 201 });
+    await prisma.issue.update({ where: { id }, data });
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json("something went wrong", { status: 400 });
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: { id: string };
+  }
+) {
+  const id = parseInt(params.id);
+
+  const issue = await prisma.issue.findUnique({ where: { id } });
+  if (!issue) {
+    return NextResponse.json({ message: "issue not found" }, { status: 404 });
+  }
+  try {
+    await prisma.issue.delete({ where: { id } });
+    return new Response(null, { status: 204 });
   } catch (error) {
     console.log(error);
     return NextResponse.json("something went wrong", { status: 400 });

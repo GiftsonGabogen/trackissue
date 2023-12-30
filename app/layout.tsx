@@ -1,4 +1,4 @@
-import { Theme, ThemePanel } from "@radix-ui/themes";
+import { Container, Theme, ThemePanel } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import "./theme-config.css";
 import "./globals.css";
@@ -23,7 +23,9 @@ export default function RootLayout({
       <body className={inter.variable}>
         <Theme appearance="light" accentColor="iris">
           <Navbar />
-          <main className="p-8">{children}</main>
+          <Container>
+            <main className="p-8">{children}</main>
+          </Container>
           {/* <ThemePanel /> */}
         </Theme>
       </body>
