@@ -30,14 +30,26 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
 
   const onFormSubmit = async (data: IssueFormData) => {
     setIsSubmitting(true);
-    const res = await fetch("/api/issues", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!res.ok) {
+    let res: Response;
+    if (issue) {
+      res = await fetch(`/api/issues/${issue.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } else {
+      res = await fetch("/api/issues", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
+    if (!res?.ok) {
       setError("unexpected behaviour");
     } else {
       router.push("/issues");
@@ -73,7 +85,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button type="submit" disabled={isSubmitting}>
-          add issue {isSubmitting && <Spinner />}
+          {issue ? "Update issue" : "Add issue"} {isSubmitting && <Spinner />}
         </Button>
       </form>
     </div>
