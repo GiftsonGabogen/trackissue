@@ -23,11 +23,22 @@ export async function PATCH(
     return NextResponse.json({ message: "issue not found" }, { status: 404 });
   }
 
-  const data: Pick<Issue, "title" | "description"> = await request.json();
+  const data: Pick<Issue, "title" | "description" | "assignedToUserId"> =
+    await request.json();
   const validation = issueSchema.safeParse(data);
   if (!validation.success) {
     return NextResponse.json(validation.error.format(), { status: 400 });
   }
+
+  if (data.assignedToUserId) {
+    const assignedUser = await prisma.user.findUnique({
+      where: { id: data.assignedToUserId },
+    });
+    if (!assignedUser) {
+      return NextResponse.json({ message: "user not found" }, { status: 400 });
+    }
+  }
+
   try {
     await prisma.issue.update({ where: { id }, data });
     return new Response(null, { status: 204 });
