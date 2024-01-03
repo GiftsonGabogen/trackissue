@@ -1,6 +1,5 @@
 import React from "react";
 import IssueForm from "../../_components/IssueForm";
-import { Issue } from "@prisma/client";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
 
