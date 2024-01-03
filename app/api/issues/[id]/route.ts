@@ -1,5 +1,5 @@
 import authOptions from "@/app/auth/authOptions";
-import { issueSchema } from "@/app/validationSchemas";
+import { patchIssueSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
 import { Issue } from "@prisma/client";
 import { getServerSession } from "next-auth";
@@ -25,7 +25,8 @@ export async function PATCH(
 
   const data: Pick<Issue, "title" | "description" | "assignedToUserId"> =
     await request.json();
-  const validation = issueSchema.safeParse(data);
+  console.log(data);
+  const validation = patchIssueSchema.safeParse(data);
   if (!validation.success) {
     return NextResponse.json(validation.error.format(), { status: 400 });
   }

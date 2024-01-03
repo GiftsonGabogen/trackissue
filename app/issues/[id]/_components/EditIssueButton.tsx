@@ -9,7 +9,7 @@ import AsigneeSelect from "./AsigneeSelect";
 const EditIssueButton = ({ issue }: { issue: Issue }) => {
   return (
     <Flex direction="column" gap="2" width="max-content">
-      <AsigneeSelect />
+      <AsigneeSelect issue={issue} />
       <Button>
         <Pencil2Icon />
         <Link href={`/issues/${issue.id}/edit`}>Edit Issue</Link>
