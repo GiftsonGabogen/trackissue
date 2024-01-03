@@ -4,10 +4,12 @@ import { Pencil2Icon } from "@radix-ui/react-icons";
 import { Button, Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { DeleteButton } from "./DeleteButton";
+import AsigneeSelect from "./AsigneeSelect";
 
 const EditIssueButton = ({ issue }: { issue: Issue }) => {
   return (
     <Flex direction="column" gap="2" width="max-content">
+      <AsigneeSelect />
       <Button>
         <Pencil2Icon />
         <Link href={`/issues/${issue.id}/edit`}>Edit Issue</Link>
