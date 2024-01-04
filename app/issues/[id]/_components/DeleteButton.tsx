@@ -34,7 +34,11 @@ export const DeleteButton = ({
     <>
       <AlertDialog.Root>
         <AlertDialog.Trigger>
-          <Button color="red" disabled={isSubmitting}>
+          <Button
+            color="red"
+            disabled={isSubmitting}
+            className="cursor-pointer"
+          >
             <AiOutlineDelete />
             Delete issue
             {isSubmitting && <Spinner />}

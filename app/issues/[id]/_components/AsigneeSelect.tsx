@@ -2,8 +2,8 @@
 import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
-import Skeleton from "react-loading-skeleton";
 import toast, { Toaster } from "react-hot-toast";
+import Skeleton from "react-loading-skeleton";
 
 const AsigneeSelect = ({ issue }: { issue: Issue }) => {
   const {
@@ -17,26 +17,28 @@ const AsigneeSelect = ({ issue }: { issue: Issue }) => {
     retry: 3,
   });
 
+  const onSelectChange = async (value: string) => {
+    try {
+      const res = await fetch(`/api/issues/${issue.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          assignedToUserId: value === "Unassigned" ? null : value || null,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error("could not save the changes");
+      }
+    } catch (error) {
+      toast.error("could not save the changes");
+    }
+  };
+
   if (isLoading) return <Skeleton />;
   if (error) return null;
   return (
     <>
       <Select.Root
-        onValueChange={async (value) => {
-          try {
-            const res = await fetch(`/api/issues/${issue.id}`, {
-              method: "PATCH",
-              body: JSON.stringify({
-                assignedToUserId: value === "Unassigned" ? null : value || null,
-              }),
-            });
-            if (!res.ok) {
-              throw new Error("could not save the changes");
-            }
-          } catch (error) {
-            toast.error("could not save the changes");
-          }
-        }}
+        onValueChange={(value) => onSelectChange(value)}
         defaultValue={issue?.assignedToUserId || "Unassigned"}
       >
         <Select.Trigger />
