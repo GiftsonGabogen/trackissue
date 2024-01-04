@@ -1,12 +1,16 @@
-import { Table } from "@radix-ui/themes";
+import { Flex, Table } from "@radix-ui/themes";
 import React from "react";
 import { Skeleton, CreateNewIssueButton } from "@/app/components";
+import IssueStatusFilter from "./_components/IssueStatusFilter";
 
 const LoadingIssuesPage = () => {
   const issues = new Array(1, 2, 3, 4, 5);
   return (
-    <div>
-      <CreateNewIssueButton />
+    <div className="space-y-5">
+      <Flex justify="between">
+        <CreateNewIssueButton />
+        <IssueStatusFilter />
+      </Flex>
       <Table.Root>
         <Table.Header>
           <Table.Row>

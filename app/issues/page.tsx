@@ -1,15 +1,30 @@
 import React from "react";
-import { Table } from "@radix-ui/themes";
+import { Flex, Table } from "@radix-ui/themes";
 import prisma from "@/prisma/client";
 import { CreateNewIssueButton, IssueStatusBadge, Link } from "@/app/components";
-import delay from "delay";
+import IssueStatusFilter from "./_components/IssueStatusFilter";
+import { useSearchParams } from "next/navigation";
+import { Status } from "@prisma/client";
 
-const IssuesPage = async () => {
-  const issues = await prisma.issue.findMany();
-  await delay(2000);
+const IssuesPage = async ({
+  searchParams,
+}: {
+  searchParams: { status: Status };
+}) => {
+  const statuses = Object.values(Status);
+  const status = statuses.includes(searchParams.status)
+    ? searchParams.status
+    : undefined;
+
+  const issues = await prisma.issue.findMany({
+    where: { status },
+  });
   return (
     <div className="space-y-5">
-      <CreateNewIssueButton />
+      <Flex justify="between">
+        <CreateNewIssueButton />
+        <IssueStatusFilter />
+      </Flex>
       <Table.Root variant="surface">
         <Table.Header>
           <Table.Row>
