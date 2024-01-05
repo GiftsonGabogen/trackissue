@@ -3,6 +3,7 @@ import IssueSummary from "./IssueSummary";
 import LatestIssues from "./LatestIssues";
 import IssueChart from "./IssueChart";
 import { Flex, Grid } from "@radix-ui/themes";
+import type { Metadata } from "next";
 
 export default async function Home() {
   const issues = await prisma.issue.findMany();
@@ -33,3 +34,8 @@ export default async function Home() {
     </Grid>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Tracking Issue",
+  description: "Home page of Track issue",
+};

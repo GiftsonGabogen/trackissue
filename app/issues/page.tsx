@@ -6,6 +6,7 @@ import IssueStatusFilter from "./_components/IssueStatusFilter";
 import { Issue, Status } from "@prisma/client";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
 import Pagination from "../components/Pagination";
+import type { Metadata } from "next";
 
 const IssuesList = ({ issues }: { issues: Issue[] }) => {
   if (!!issues?.length) {
@@ -107,3 +108,8 @@ const IssuesPage = async ({
 };
 
 export default IssuesPage;
+
+export const metadata: Metadata = {
+  title: "View All Issues",
+  description: "Viewing All Issues",
+};

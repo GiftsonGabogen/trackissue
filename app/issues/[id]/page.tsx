@@ -5,10 +5,8 @@ import EditIssueButton from "./_components/EditIssueButton";
 import IssueDetails from "./_components/IssueDetails";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
-
-interface IssueDetailPageParams {
-  id: string;
-}
+import type { Metadata } from "next";
+import { Issue } from "@prisma/client";
 
 const IssueDetailPage = async ({
   params,
@@ -35,3 +33,22 @@ const IssueDetailPage = async ({
 };
 
 export default IssueDetailPage;
+
+interface IssueDetailPageParams {
+  id: string;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: IssueDetailPageParams;
+}) {
+  const issue: Issue | null = await prisma.issue.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  return {
+    title: issue?.title,
+    description: `Description of ${issue?.title}`,
+  };
+}
