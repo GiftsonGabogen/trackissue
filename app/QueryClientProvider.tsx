@@ -7,7 +7,7 @@ import {
 import { PropsWithChildren } from "react";
 const queryClient = new QueryClient();
 
-const QueryClientProvide = ({ children }: PropsWithChildren) => {
+const QueryClientProvider = ({ children }: PropsWithChildren) => {
   return (
     <ReactQueryClientProvider client={queryClient}>
       {children}
@@ -15,4 +15,4 @@ const QueryClientProvide = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default QueryClientProvide;
+export default QueryClientProvider;
