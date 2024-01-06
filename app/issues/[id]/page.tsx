@@ -5,7 +5,6 @@ import EditIssueButton from "./_components/EditIssueButton";
 import IssueDetails from "./_components/IssueDetails";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
-import { Issue } from "@prisma/client";
 import { cache } from "react";
 
 const fetchUser = cache((issueId: number) =>

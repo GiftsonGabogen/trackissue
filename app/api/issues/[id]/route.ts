@@ -5,6 +5,13 @@ import { Issue } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
+const checkIfUserExist = async (id: string) => {
+  const assignedUser = await prisma.user.findUnique({
+    where: { id },
+  });
+  return assignedUser;
+};
+
 export async function PATCH(
   request: NextRequest,
   {
@@ -25,16 +32,13 @@ export async function PATCH(
 
   const data: Pick<Issue, "title" | "description" | "assignedToUserId"> =
     await request.json();
-  console.log(data);
   const validation = patchIssueSchema.safeParse(data);
   if (!validation.success) {
     return NextResponse.json(validation.error.format(), { status: 400 });
   }
 
   if (data.assignedToUserId) {
-    const assignedUser = await prisma.user.findUnique({
-      where: { id: data.assignedToUserId },
-    });
+    const assignedUser = await checkIfUserExist(data.assignedToUserId);
     if (!assignedUser) {
       return NextResponse.json({ message: "user not found" }, { status: 400 });
     }
